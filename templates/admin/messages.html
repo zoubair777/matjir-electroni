@@ -1,0 +1,47 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}رسائل العملاء{% endblock %}
+{% block page_title %}رسائل التواصل الواردة{% endblock %}
+
+{% block admin_content %}
+<div class="panel">
+  <div class="panel-head"><h2>كل الرسائل ({{ messages|length }})</h2></div>
+
+  {% if messages %}
+  <table>
+    <thead>
+      <tr><th>الحالة</th><th>الاسم</th><th>الهاتف</th><th>الرسالة</th><th>التاريخ</th><th>إجراءات</th></tr>
+    </thead>
+    <tbody>
+      {% for m in messages %}
+      <tr>
+        <td>
+          {% if m.is_read %}<span class="pill pill-muted">مقروءة</span>
+          {% else %}<span class="pill pill-success">جديدة</span>{% endif %}
+        </td>
+        <td>{{ m.name }}</td>
+        <td dir="ltr" style="text-align:right;">{{ m.phone }}</td>
+        <td style="max-width:320px;">{{ m.message }}</td>
+        <td>{{ m.created_at }}</td>
+        <td>
+          <div class="table-actions">
+            <a href="https://wa.me/{{ m.phone }}" target="_blank" rel="noopener" class="btn btn-outline btn-sm">رد عبر واتساب</a>
+            {% if not m.is_read %}
+            <form method="POST" action="{{ url_for('admin_message_read', message_id=m.id) }}">
+              <button type="submit" class="btn btn-outline btn-sm">تمييز كمقروءة</button>
+            </form>
+            {% endif %}
+            <form method="POST" action="{{ url_for('admin_message_delete', message_id=m.id) }}"
+                  onsubmit="return confirm('هل تريد حذف هذه الرسالة؟');">
+              <button type="submit" class="btn btn-danger btn-sm">حذف</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p style="color:var(--charcoal-soft); text-align:center; padding:30px 0;">لا توجد رسائل واردة بعد.</p>
+  {% endif %}
+</div>
+{% endblock %}

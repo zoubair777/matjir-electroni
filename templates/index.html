@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block title %}{{ site.site_name }} — {{ site.tagline }}{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-copy">
+      <p class="hero-eyebrow">تشكيلة خريف ٢٠٢٦</p>
+      <h1>أثاث فاخر يروي حكاية كل زاوية في منزلك</h1>
+      <p>قطع مختارة بعناية من أجود الأقمشة المخملية والخياطة اليدوية الدقيقة، لنمنح صالونك دفء الفخامة وأناقة التفاصيل.</p>
+      <div class="hero-actions">
+        <a href="{{ url_for('products') }}" class="btn btn-primary">تصفح المنتجات</a>
+        <a href="https://wa.me/{{ site.whatsapp_number }}" target="_blank" rel="noopener" class="btn btn-wa">
+          اطلب عبر واتساب
+        </a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <img src="{{ url_for('static', filename=site.logo_path) }}" alt="وسائد وأثاث فاخر من {{ site.site_name }}">
+      <div class="hero-badge">
+        <div class="big">+500</div>
+        <div class="small">عميل راضٍ عن تجربتنا</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if offers %}
+<section class="offers-strip">
+  <div class="container">
+    <div class="section-head" style="color:#fff;">
+      <div>
+        <h2 style="color:#fff;">عروض حصرية لفترة محدودة</h2>
+        <p style="color:rgba(251,249,244,.75);">لا تفوّت فرصة اقتناء قطعتك المفضلة بأفضل سعر</p>
+      </div>
+    </div>
+    <div class="offers-grid">
+      {% for offer in offers %}
+      <div class="offer-card">
+        {% if offer.discount_percent %}<div class="discount">خصم {{ offer.discount_percent }}%</div>{% endif %}
+        <h3>{{ offer.title }}</h3>
+        <p>{{ offer.description }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if featured %}
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>الأكثر تميزًا</h2>
+        <p>قطع مختارة تجمع بين الحرفية العالية وسحر التفاصيل</p>
+      </div>
+      <a href="{{ url_for('products') }}" class="section-link">عرض كل المنتجات ←</a>
+    </div>
+    <div class="product-grid">
+      {% for p in featured %}
+        {% include "_product_card.html" %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>وصل حديثًا</h2>
+        <p>أحدث الإضافات إلى تشكيلتنا من الأثاث والقطع الزخرفية</p>
+      </div>
+    </div>
+    {% if latest %}
+    <div class="product-grid">
+      {% for p in latest %}
+        {% include "_product_card.html" %}
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <div class="glyph">﴾ ﴿</div>
+      <p>سيتم إضافة المنتجات قريبًا من لوحة تحكم المتجر.</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% if gallery %}
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>لمحات من صالوناتنا</h2>
+        <p>صور حقيقية من تنفيذات سابقة عند عملائنا</p>
+      </div>
+    </div>
+    <div class="gallery-grid">
+      {% for item in gallery %}
+      <a href="{{ url_for('static', filename=item.file_path) }}" target="_blank" rel="noopener">
+        <img src="{{ url_for('static', filename=item.file_path) }}" alt="{{ item.title or site.site_name }}" loading="lazy">
+      </a>
+      {% endfor %}
+    </div>
+
+    {% if videos %}
+    <div class="video-grid">
+      {% for v in videos %}
+      <div class="video-card">
+        <video src="{{ url_for('static', filename=v.file_path) }}" controls preload="metadata"></video>
+        {% if v.title %}<div class="video-caption">{{ v.title }}</div>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+<section class="section section-alt" id="about">
+  <div class="container about-split">
+    <img src="{{ url_for('static', filename=site.logo_path) }}" alt="عن {{ site.site_name }}">
+    <div>
+      <h2>حكايتنا مع الفخامة</h2>
+      <p>{{ site.about_text }}</p>
+      <div class="stat-row">
+        <div>
+          <div class="num">+12</div>
+          <div class="label">سنة خبرة</div>
+        </div>
+        <div>
+          <div class="num">+500</div>
+          <div class="label">مشروع منجز</div>
+        </div>
+        <div>
+          <div class="num">100%</div>
+          <div class="label">خامات أصلية</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

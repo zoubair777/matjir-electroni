@@ -1,0 +1,51 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}المنتجات{% endblock %}
+{% block page_title %}إدارة المنتجات{% endblock %}
+
+{% block admin_content %}
+<div class="panel">
+  <div class="panel-head">
+    <h2>كل المنتجات ({{ products|length }})</h2>
+    <a href="{{ url_for('admin_product_new') }}" class="btn btn-primary">+ إضافة منتج جديد</a>
+  </div>
+
+  {% if products %}
+  <table>
+    <thead>
+      <tr><th>الصورة</th><th>الاسم</th><th>التصنيف</th><th>السعر</th><th>الحالة</th><th>إجراءات</th></tr>
+    </thead>
+    <tbody>
+      {% for p in products %}
+      <tr>
+        <td>
+          {% if p.image_path %}
+            <img class="table-thumb" src="{{ url_for('static', filename=p.image_path) }}" alt="{{ p.name }}">
+          {% else %}
+            <div class="table-thumb"></div>
+          {% endif %}
+        </td>
+        <td>{{ p.name }}{% if p.is_featured %} <span class="pill pill-gold">مميز</span>{% endif %}</td>
+        <td>{{ p.category_name or '—' }}</td>
+        <td>{{ "%.0f"|format(p.price) }} د.ل</td>
+        <td>
+          {% if p.is_active %}<span class="pill pill-success">منشور</span>
+          {% else %}<span class="pill pill-muted">مخفي</span>{% endif %}
+        </td>
+        <td>
+          <div class="table-actions">
+            <a href="{{ url_for('admin_product_edit', product_id=p.id) }}" class="btn btn-outline btn-sm">تعديل</a>
+            <form method="POST" action="{{ url_for('admin_product_delete', product_id=p.id) }}"
+                  onsubmit="return confirm('هل أنت متأكد من حذف هذا المنتج؟');">
+              <button type="submit" class="btn btn-danger btn-sm">حذف</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p style="color:var(--charcoal-soft); text-align:center; padding:30px 0;">لا توجد منتجات بعد. ابدأ بإضافة أول منتج.</p>
+  {% endif %}
+</div>
+{% endblock %}

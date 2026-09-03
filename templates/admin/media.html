@@ -1,0 +1,57 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}الصور والفيديو{% endblock %}
+{% block page_title %}إدارة الصور ومقاطع الفيديو{% endblock %}
+
+{% block admin_content %}
+<div class="panel">
+  <div class="panel-head"><h2>رفع ملف جديد</h2></div>
+  <form method="POST" action="{{ url_for('admin_media_new') }}" enctype="multipart/form-data">
+    <div class="form-row">
+      <div class="field">
+        <label for="title">عنوان الملف (اختياري)</label>
+        <input type="text" id="title" name="title" placeholder="مثال: صالون عميل في طرابلس">
+      </div>
+      <div class="field">
+        <label for="section">يظهر في قسم</label>
+        <select id="section" name="section">
+          <option value="gallery">معرض الصور بالرئيسية</option>
+          <option value="other">أرشيف عام فقط</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label for="file">الملف (صورة jpg/png/webp أو فيديو mp4/webm/mov)</label>
+      <input type="file" id="file" name="file" accept="image/*,video/*" required>
+    </div>
+    <button type="submit" class="btn btn-primary">رفع الملف</button>
+  </form>
+</div>
+
+<div class="panel">
+  <div class="panel-head"><h2>الملفات المرفوعة ({{ media_items|length }})</h2></div>
+  {% if media_items %}
+  <div class="media-grid">
+    {% for m in media_items %}
+    <div class="media-item">
+      <div class="thumb">
+        {% if m.media_type == 'image' %}
+          <img src="{{ url_for('static', filename=m.file_path) }}" alt="{{ m.title }}">
+        {% else %}
+          <video src="{{ url_for('static', filename=m.file_path) }}" muted></video>
+        {% endif %}
+      </div>
+      <div class="meta">
+        <small>{{ m.title or ('فيديو' if m.media_type == 'video' else 'صورة') }}</small>
+        <form method="POST" action="{{ url_for('admin_media_delete', media_id=m.id) }}"
+              onsubmit="return confirm('هل تريد حذف هذا الملف؟');">
+          <button type="submit" class="btn btn-danger btn-sm">حذف</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p style="color:var(--charcoal-soft); text-align:center; padding:30px 0;">لم يتم رفع أي ملفات بعد.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}تواصل معنا — {{ site.site_name }}{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top:56px;">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>نسعد بتواصلكم معنا</h2>
+        <p>راسلونا لأي استفسار عن منتجاتنا أو لطلب استشارة تصميم مجانية</p>
+      </div>
+    </div>
+
+    <div class="contact-wrap">
+      <div class="contact-info">
+        <h2>معلومات التواصل</h2>
+        <p>فريقنا جاهز للرد على استفساراتكم وتقديم أفضل الحلول لمنزلكم خلال دقائق.</p>
+
+        <div class="contact-detail">
+          <span class="ic">☎</span>
+          <span dir="ltr">{{ site.phone }}</span>
+        </div>
+        <div class="contact-detail">
+          <span class="ic">⚑</span>
+          <span>{{ site.address }}</span>
+        </div>
+        <div class="contact-detail">
+          <span class="ic">✉</span>
+          <span>راسلنا وسنعاود التواصل خلال 24 ساعة</span>
+        </div>
+
+        <a href="https://wa.me/{{ site.whatsapp_number }}" target="_blank" rel="noopener" class="btn btn-wa btn-block wa-cta">
+          تواصل معنا مباشرة عبر واتساب
+        </a>
+      </div>
+
+      <div class="form-card">
+        <form method="POST" action="{{ url_for('contact') }}">
+          <div class="field">
+            <label for="name">الاسم الكامل</label>
+            <input type="text" id="name" name="name" placeholder="أدخل اسمك الكامل" required>
+          </div>
+          <div class="field">
+            <label for="phone">رقم الهاتف</label>
+            <input type="tel" id="phone" name="phone" placeholder="09xxxxxxxx" required>
+          </div>
+          <div class="field">
+            <label for="message">رسالتك</label>
+            <textarea id="message" name="message" placeholder="اكتب استفسارك هنا..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">إرسال الرسالة</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

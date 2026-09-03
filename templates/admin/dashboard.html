@@ -1,0 +1,60 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}لوحة القيادة{% endblock %}
+{% block page_title %}مرحبًا بك، {{ session.admin_username }}{% endblock %}
+
+{% block admin_content %}
+<div class="grid-cards">
+  <div class="stat-card">
+    <div class="num">{{ stats.products }}</div>
+    <div class="label">إجمالي المنتجات</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">{{ stats.offers }}</div>
+    <div class="label">عروض نشطة</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">{{ stats.media }}</div>
+    <div class="label">صور ومقاطع فيديو</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">{{ stats.messages }}</div>
+    <div class="label">رسائل غير مقروءة</div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-head">
+    <h2>أحدث رسائل العملاء</h2>
+    <a href="{{ url_for('admin_messages') }}" class="btn btn-outline btn-sm">عرض كل الرسائل</a>
+  </div>
+  {% if recent_messages %}
+  <table>
+    <thead>
+      <tr><th>الاسم</th><th>الهاتف</th><th>الرسالة</th><th>التاريخ</th></tr>
+    </thead>
+    <tbody>
+      {% for m in recent_messages %}
+      <tr>
+        <td>{{ m.name }}</td>
+        <td dir="ltr" style="text-align:right;">{{ m.phone }}</td>
+        <td>{{ m.message[:60] }}{% if m.message|length > 60 %}…{% endif %}</td>
+        <td>{{ m.created_at }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p style="color:var(--charcoal-soft);">لا توجد رسائل بعد.</p>
+  {% endif %}
+</div>
+
+<div class="panel">
+  <div class="panel-head"><h2>روابط سريعة</h2></div>
+  <div style="display:flex; gap:14px; flex-wrap:wrap;">
+    <a href="{{ url_for('admin_product_new') }}" class="btn btn-primary">+ إضافة منتج</a>
+    <a href="{{ url_for('admin_offer_new') }}" class="btn btn-gold">+ إضافة عرض</a>
+    <a href="{{ url_for('admin_media') }}" class="btn btn-outline">رفع صورة أو فيديو</a>
+    <a href="{{ url_for('admin_settings') }}" class="btn btn-outline">تعديل الاسم والشعار</a>
+  </div>
+</div>
+{% endblock %}

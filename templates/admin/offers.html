@@ -1,0 +1,50 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}العروض{% endblock %}
+{% block page_title %}إدارة العروض{% endblock %}
+
+{% block admin_content %}
+<div class="panel">
+  <div class="panel-head">
+    <h2>كل العروض ({{ offers|length }})</h2>
+    <a href="{{ url_for('admin_offer_new') }}" class="btn btn-primary">+ إضافة عرض جديد</a>
+  </div>
+
+  {% if offers %}
+  <table>
+    <thead>
+      <tr><th>الصورة</th><th>العنوان</th><th>نسبة الخصم</th><th>الحالة</th><th>إجراءات</th></tr>
+    </thead>
+    <tbody>
+      {% for o in offers %}
+      <tr>
+        <td>
+          {% if o.image_path %}
+            <img class="table-thumb" src="{{ url_for('static', filename=o.image_path) }}" alt="{{ o.title }}">
+          {% else %}
+            <div class="table-thumb"></div>
+          {% endif %}
+        </td>
+        <td>{{ o.title }}</td>
+        <td>{{ o.discount_percent }}%</td>
+        <td>
+          {% if o.is_active %}<span class="pill pill-success">نشط</span>
+          {% else %}<span class="pill pill-muted">متوقف</span>{% endif %}
+        </td>
+        <td>
+          <div class="table-actions">
+            <a href="{{ url_for('admin_offer_edit', offer_id=o.id) }}" class="btn btn-outline btn-sm">تعديل</a>
+            <form method="POST" action="{{ url_for('admin_offer_delete', offer_id=o.id) }}"
+                  onsubmit="return confirm('هل أنت متأكد من حذف هذا العرض؟');">
+              <button type="submit" class="btn btn-danger btn-sm">حذف</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p style="color:var(--charcoal-soft); text-align:center; padding:30px 0;">لا توجد عروض حاليًا.</p>
+  {% endif %}
+</div>
+{% endblock %}

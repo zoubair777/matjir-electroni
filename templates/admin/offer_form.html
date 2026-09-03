@@ -1,0 +1,45 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}{{ 'تعديل عرض' if offer else 'إضافة عرض' }}{% endblock %}
+{% block page_title %}{{ 'تعديل عرض' if offer else 'إضافة عرض جديد' }}{% endblock %}
+
+{% block admin_content %}
+<div class="panel">
+  <form method="POST" enctype="multipart/form-data">
+    <div class="field">
+      <label for="title">عنوان العرض</label>
+      <input type="text" id="title" name="title" value="{{ offer.title if offer else '' }}" required>
+    </div>
+
+    <div class="field">
+      <label for="description">تفاصيل العرض</label>
+      <textarea id="description" name="description">{{ offer.description if offer else '' }}</textarea>
+    </div>
+
+    <div class="field">
+      <label for="discount_percent">نسبة الخصم (%)</label>
+      <input type="number" id="discount_percent" name="discount_percent" value="{{ offer.discount_percent if offer else 0 }}" min="0" max="100">
+    </div>
+
+    {% if offer and offer.image_path %}
+    <div class="current-thumb">
+      <img src="{{ url_for('static', filename=offer.image_path) }}" alt="{{ offer.title }}">
+      <span class="hint">الصورة الحالية — ارفع صورة جديدة أدناه لاستبدالها</span>
+    </div>
+    {% endif %}
+    <div class="field">
+      <label for="image">صورة العرض (اختياري)</label>
+      <input type="file" id="image" name="image" accept="image/*">
+    </div>
+
+    <div class="field field-check">
+      <input type="checkbox" id="is_active" name="is_active" {% if not offer or offer.is_active %}checked{% endif %}>
+      <label for="is_active" style="margin:0;">عرض نشط وظاهر في الصفحة الرئيسية</label>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-gold">{{ 'حفظ التعديلات' if offer else 'إضافة العرض' }}</button>
+      <a href="{{ url_for('admin_offers') }}" class="btn btn-outline">إلغاء</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}منتجاتنا — {{ site.site_name }}{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top:56px;">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>تشكيلتنا الكاملة</h2>
+        <p>تصفّح جميع قطع الأثاث والوسائد الفاخرة المتوفرة حاليًا</p>
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <a href="{{ url_for('products') }}" class="filter-chip {{ 'active' if not selected_category }}">الكل</a>
+      {% for c in categories %}
+        <a href="{{ url_for('products', category=c.id) }}" class="filter-chip {{ 'active' if selected_category == c.id }}">{{ c.name }}</a>
+      {% endfor %}
+    </div>
+
+    {% if products %}
+    <div class="product-grid wide">
+      {% for p in products %}
+        {% include "_product_card.html" %}
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <div class="glyph">﴾ ﴿</div>
+      <p>لا توجد منتجات في هذا التصنيف حاليًا. تابعونا قريبًا لمزيد من الإضافات.</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

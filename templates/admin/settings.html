@@ -1,0 +1,91 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}الإعدادات العامة{% endblock %}
+{% block page_title %}الإعدادات العامة للموقع{% endblock %}
+
+{% block admin_content %}
+<div class="panel">
+  <div class="panel-head"><h2>معلومات المتجر والشعار</h2></div>
+  <form method="POST" enctype="multipart/form-data">
+    <div class="form-row">
+      <div class="field">
+        <label for="site_name">اسم المتجر</label>
+        <input type="text" id="site_name" name="site_name" value="{{ settings.site_name }}" required>
+      </div>
+      <div class="field">
+        <label for="tagline">الشعار النصي (Tagline)</label>
+        <input type="text" id="tagline" name="tagline" value="{{ settings.tagline }}">
+      </div>
+    </div>
+
+    <div class="current-thumb">
+      <img src="{{ url_for('static', filename=settings.logo_path) }}" alt="{{ settings.site_name }}">
+      <span class="hint">الشعار الحالي — ارفع صورة جديدة أدناه لاستبداله</span>
+    </div>
+    <div class="field">
+      <label for="logo">شعار المتجر</label>
+      <input type="file" id="logo" name="logo" accept="image/*">
+    </div>
+
+    <div class="form-row">
+      <div class="field">
+        <label for="phone">رقم الهاتف الظاهر للعملاء</label>
+        <input type="text" id="phone" name="phone" value="{{ settings.phone }}" dir="ltr">
+      </div>
+      <div class="field">
+        <label for="whatsapp_number">رقم واتساب (بصيغة دولية بدون + أو أصفار)</label>
+        <input type="text" id="whatsapp_number" name="whatsapp_number" value="{{ settings.whatsapp_number }}" dir="ltr">
+        <p class="hint">مثال لرقم ليبي 0927569139 يكتب هنا: 218927569139</p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="address">العنوان</label>
+      <input type="text" id="address" name="address" value="{{ settings.address }}">
+    </div>
+
+    <div class="field">
+      <label for="about_text">نبذة عن المتجر (تظهر في الرئيسية والتذييل)</label>
+      <textarea id="about_text" name="about_text">{{ settings.about_text }}</textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="field">
+        <label for="facebook_url">رابط فيسبوك (اختياري)</label>
+        <input type="url" id="facebook_url" name="facebook_url" value="{{ settings.facebook_url }}" dir="ltr">
+      </div>
+      <div class="field">
+        <label for="instagram_url">رابط انستغرام (اختياري)</label>
+        <input type="url" id="instagram_url" name="instagram_url" value="{{ settings.instagram_url }}" dir="ltr">
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">حفظ الإعدادات</button>
+    </div>
+  </form>
+</div>
+
+<div class="panel">
+  <div class="panel-head"><h2>تغيير كلمة مرور لوحة التحكم</h2></div>
+  <form method="POST" action="{{ url_for('admin_change_password') }}">
+    <div class="form-row">
+      <div class="field">
+        <label for="current_password">كلمة المرور الحالية</label>
+        <input type="password" id="current_password" name="current_password" required>
+      </div>
+      <div></div>
+    </div>
+    <div class="form-row">
+      <div class="field">
+        <label for="new_password">كلمة المرور الجديدة</label>
+        <input type="password" id="new_password" name="new_password" required>
+      </div>
+      <div class="field">
+        <label for="confirm_password">تأكيد كلمة المرور الجديدة</label>
+        <input type="password" id="confirm_password" name="confirm_password" required>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-outline">تحديث كلمة المرور</button>
+  </form>
+</div>
+{% endblock %}
