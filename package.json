@@ -1,0 +1,17 @@
+{
+  "name": "matjir-electroni",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "concurrently \"npm run watch:css\" \"npm start\"",
+    "watch:css": "npx tailwindcss -i ./src/styles/tailwind.css -o ./dist/styles.css --watch"
+  },
+  "dependencies": {
+    "electron": "^25.0.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.0.0",
+    "concurrently": "^7.0.0"
+  }
+}
